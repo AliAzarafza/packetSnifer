@@ -1,16 +1,19 @@
 #################
 #   liberary    #
 #################
-import scapy.all as acapy
+import scapy.all as scapy
+from scapy.layers import http
 
 
 def sniff(interface):
-    scapy.sniff(iface=interface, store=False, prn=processSniffedPacket)
+    scapy.sniff(iface=interface, store=False, prn=processSniffedPacket, filter="udp")
 
 
 
 def processSniffedPacket(packet):
-    print(packet)
+    if packet.haslayer(http.HTTPRequest):
+        print(packet)
 
 
-sniff('eth0')
+
+sniff('eth0')   
